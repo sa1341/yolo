@@ -13,7 +13,7 @@ jar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }

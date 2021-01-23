@@ -47,7 +47,6 @@ public class MemberRepositoryTests {
     @Test
     public void saveMember() {
         QMember member = QMember.member;
-
         Member findMember = queryFactory
                     .select(member)
                     .from(member)
