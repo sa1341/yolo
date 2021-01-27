@@ -16,7 +16,7 @@ public class IndexController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final MemberService memberService;
 
-    @GetMapping(value = "/index")
+    @GetMapping(value = "/v1/index")
     public Member index() {
         Member member = Member.create("junyoung", 30);
         memberService.saveMember(member);

@@ -3,6 +3,7 @@ package com.junyoung.yolo.repository;
 import com.junyoung.yolo.domain.member.entity.Member;
 import com.junyoung.yolo.domain.member.entity.QMember;
 import com.junyoung.yolo.exception.MemberNotFoundException;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,6 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.List;
+
+import static com.junyoung.yolo.domain.member.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -60,4 +64,39 @@ public class MemberRepositoryTests {
         //then
         assertThat("junyoung").isEqualTo(findMember.getName());
      }
+
+
+     /**
+        페이징 처리를 위한 테스트 코드 작
+      **/
+     @Test
+     public void testPageDefault() throws Exception {
+         //given
+         QueryResults<Member> results = queryFactory.selectFrom(member)
+                 .fetchResults();
+
+         //when
+         List<Member> members = results.getResults();
+         long totalCount = results.getTotal();
+
+         //then
+         assertThat(members.size()).isEqualTo(totalCount);
+      }
+
+      @Test
+      public void paging1() throws Exception {
+          //given
+          //when
+          List<Member> result = queryFactory
+                  .selectFrom(member)
+                  .orderBy(member.name.desc())
+                  .offset(1)
+                  .limit(2)
+                  .fetch();
+
+          result.forEach(m -> System.out.println(m.getName()));
+
+          //then
+          assertThat(result.size()).isEqualTo(2);
+       }
 }

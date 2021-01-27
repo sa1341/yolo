@@ -1,9 +1,6 @@
 package com.junyoung.yolo.domain.member.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

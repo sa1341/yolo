@@ -1,8 +1,4 @@
 spring:
-  profiles:
-    active: local
----
-spring:
   profiles: local
 
   datasource:
@@ -12,13 +8,35 @@ spring:
     password: wnsdud@123
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     open-in-view: false
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
 #        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+#   org.hibernate.type: trace
+---
+spring:
+  profiles: dev
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/yolo
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show-sql: false
         format_sql: true
 
 logging:
