@@ -4,6 +4,7 @@ import com.junyoung.yolo.domain.member.entity.Member;
 import com.junyoung.yolo.domain.member.entity.QMember;
 import com.junyoung.yolo.exception.MemberNotFoundException;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -99,4 +100,24 @@ public class MemberRepositoryTests {
           //then
           assertThat(result.size()).isEqualTo(2);
        }
+
+       @Test
+       public void aggregation() throws Exception {
+
+           //given
+           List<Tuple> result = queryFactory.select(member.count(),
+                   member.age.sum(),
+                   member.age.avg(),
+                   member.age.max(),
+                   member.age.min())
+                   .from(member)
+                   .fetch();
+
+           //when
+            Tuple tuple = result.get(0);
+           //then
+           assertThat(tuple.get(member.count())).isEqualTo(3);
+           assertThat(tuple.get(member.age.sum())).isEqualTo(90);
+           assertThat(tuple.get(member.age.avg())).isEqualTo(30);
+        }
 }
