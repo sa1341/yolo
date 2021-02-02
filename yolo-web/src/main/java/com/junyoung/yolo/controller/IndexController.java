@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RequiredArgsConstructor
 @RestController
 public class IndexController {
@@ -17,7 +20,7 @@ public class IndexController {
     private final MemberService memberService;
 
     @GetMapping(value = "/v1/index")
-    public Member index() {
+    public Member index(HttpServletRequest request, HttpServletResponse response) {
         Member member = Member.create("junyoung", 30);
         memberService.saveMember(member);
         logger.debug("name: {}", member.getName());
