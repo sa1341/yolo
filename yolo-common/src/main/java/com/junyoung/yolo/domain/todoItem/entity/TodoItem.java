@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Getter
@@ -19,9 +18,11 @@ import java.util.UUID;
 public class TodoItem {
 
     @Id
-    private String id;
+    private Long id;
 
-    private String content;
+    private String text;
+
+    private boolean isDone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -34,14 +35,17 @@ public class TodoItem {
     private LocalDateTime updatedAt;
 
     @Builder
-    protected TodoItem(String content) {
-        this.id = UUID.randomUUID().toString();
-        this.content = content;
+    protected TodoItem(Long id, String text, boolean isDone) {
+        this.id = id;
+        this.text = text;
+        this.isDone = isDone;
     }
 
-    public static TodoItem create(String content) {
+    public static TodoItem create(Long id, String text, boolean isDone) {
         return TodoItem.builder()
-                    .content(content)
+                    .id(id)
+                    .text(text)
+                    .isDone(isDone)
                     .build();
     }
 
