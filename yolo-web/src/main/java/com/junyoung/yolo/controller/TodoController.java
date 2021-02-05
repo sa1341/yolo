@@ -9,13 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Type;
 import java.util.List;
+import static com.junyoung.yolo.domain.todoItem.service.TodoServiceHelper.validateTodoItemsRequest;
 
 @RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
@@ -25,21 +22,36 @@ public class TodoController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TodoService todoService;
 
+    /**
+     *
+     * 사용자가 작성한 TodoItemList 저장 API
+     *
+     * @param todoItemList
+     * @return
+     */
     @PostMapping(value = "/todos", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> saveTodoList(@RequestBody String todoList) {
-
+    public ResponseEntity<String> saveTodoItemList(@RequestBody final String todoItemList) {
         try {
-            logger.info("body: {}", todoList);
+            logger.info("todoItemList: {}", todoItemList);
+            validateTodoItemsRequest(todoItemList);
             Type type = new TypeToken<List<TodoItemRequest>>() {}.getType();
             Gson gson = new Gson();
-            List<TodoItemRequest> todoItemRequests = gson.fromJson(todoList, type);
-            todoItemRequests.forEach(todo -> logger.info(todo.getText()));
-            todoService.saveTodoList(todoItemRequests);
+            List<TodoItemRequest> todoItemsRequests = gson.fromJson(todoItemList, type);
+            todoService.saveTodoItemList(todoItemsRequests);
         } catch (Exception e) {
             logger.error("saving todoList is failed", e);
         }
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/todos", produces = "applicationon/json; charset=UTF-8")
+    public ResponseEntity<String> todoItemList() {
+        try {
 
 
+        } catch (Exception e) {
+            logger.error("fetching todoItemList is failed", e);
+        }
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 }
