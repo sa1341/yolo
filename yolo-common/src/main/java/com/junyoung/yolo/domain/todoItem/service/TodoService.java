@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -21,15 +22,35 @@ public class TodoService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TodoItemRepository todoItemRepository;
 
-    public void saveTodoItemList(List<TodoItemRequest> todoItemsRequest) {
-        List<TodoItem> todoItemList = todoItemsRequest.stream()
-                .map(TodoItemRequest::toEntity)
-                .collect(Collectors.toList());
-        todoItemRepository.saveAll(todoItemList);
+    public void saveTodoItem(TodoItemRequest todoItemRequest) {
+        TodoItem todoItem = todoItemRequest.toEntity();
+        todoItemRepository.save(todoItem);
         logger.info("saving todoItem is success");
     }
 
-    public List<TodoItemResponse> fetchAllTodoItemList() {
-        return null;
+    @Transactional(readOnly = true)
+    public List<TodoItemResponse> fetchAllTodoItems() {
+        List<TodoItem> todoItems = todoItemRepository.findAll();
+        List<TodoItemResponse> todoResponse = todoItems.stream()
+                .map(TodoItem::changeTodoResponse)
+                .collect(Collectors.toList());
+        return todoResponse;
+    }
+
+    public void deleteTodoItem(String id) {
+        logger.warn("deleted TodoItemId: {}", id);
+        todoItemRepository.deleteById(Long.parseLong(id));
+    }
+
+    public String changeTodoItem(TodoItemRequest todoItemRequest) {
+        TodoItem todoItem = todoItemRequest.toEntity();
+        Long id = todoItem.getId();
+        Optional<TodoItem> optionalTodoItem = todoItemRepository.findById(id);
+
+        if (optionalTodoItem.isPresent()) {
+            TodoItem findTodoItem = optionalTodoItem.get();
+            findTodoItem.changeContent(todoItem.getText());
+        }
+        return String.valueOf(id);
     }
 }

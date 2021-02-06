@@ -1,12 +1,10 @@
 package com.junyoung.yolo.domain.todoItem.entity;
 
 import com.junyoung.yolo.domain.member.entity.Member;
+import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,28 +26,41 @@ public class TodoItem {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Builder
     protected TodoItem(Long id, String text, boolean isDone) {
         this.id = id;
         this.text = text;
         this.isDone = isDone;
     }
 
-    public static TodoItem create(Long id, String text, boolean isDone) {
-        return TodoItem.builder()
-                    .id(id)
-                    .text(text)
-                    .isDone(isDone)
-                    .build();
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();;
+        this.updatedAt = LocalDateTime.now();;
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();;
+    }
+
+    public static TodoItem create(Long id, String text, boolean isDone) {
+        return new TodoItem(id, text, isDone);
+    }
+
+    public void changeContent(String content) {
+        this.text = content;
+    }
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public TodoItemResponse changeTodoResponse() {
+        return new TodoItemResponse(this.id, this.text, this.isDone);
     }
 }
