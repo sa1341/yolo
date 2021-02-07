@@ -2,7 +2,9 @@ package com.junyoung.yolo.domain.todoItem.dto;
 
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class TodoItemRequest {
 

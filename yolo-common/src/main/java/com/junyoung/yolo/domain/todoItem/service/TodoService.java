@@ -25,11 +25,11 @@ public class TodoService {
     public void saveTodoItem(TodoItemRequest todoItemRequest) {
         TodoItem todoItem = todoItemRequest.toEntity();
         todoItemRepository.save(todoItem);
-        logger.info("saving todoItem is success");
+        logger.info("saving TodoItem is success");
     }
 
     @Transactional(readOnly = true)
-    public List<TodoItemResponse> fetchAllTodoItems() {
+    public List<TodoItemResponse> fetchTodoItems() {
         List<TodoItem> todoItems = todoItemRepository.findAll();
         List<TodoItemResponse> todoResponse = todoItems.stream()
                 .map(TodoItem::changeTodoResponse)

@@ -1,6 +1,6 @@
 package com.junyoung.yolo.controllerAdvice;
 
-import com.junyoung.yolo.exception.TodosNotFoundException;
+import com.junyoung.yolo.exception.TodoItemNotFoundException;
 import com.junyoung.yolo.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,11 @@ public class RestControllerExceptionAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(value = TodosNotFoundException.class)
+    @ExceptionHandler(value = TodoItemNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<ErrorResponse> handleTodoItemsNotFound(TodosNotFoundException e) {
-        logger.error("saving todoList is failed", e);
-        ErrorResponse responseError = new ErrorResponse(400, "TodoItems 값이 존재하지 않습니다.");
+    public ResponseEntity<ErrorResponse> handleTodoItemsNotFound(TodoItemNotFoundException e) {
+        logger.error("TodoItem is not exist", e);
+        ErrorResponse responseError = new ErrorResponse(400, e.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }
 }
