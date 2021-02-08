@@ -42,4 +42,5 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+    com.junyoung.yolo: debug
 #   org.hibernate.type: trace

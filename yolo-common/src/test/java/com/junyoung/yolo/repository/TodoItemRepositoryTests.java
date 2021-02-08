@@ -41,9 +41,9 @@ public class TodoItemRepositoryTests {
         Member member2 = Member.create("minwan", 30);
         Member member3 = Member.create("seungtop", 30);
 
-        TodoItem todoItem1 = TodoItem.create("아 인생 잣 같네");
-        TodoItem todoItem2= TodoItem.create("성공합시다!!!");
-        TodoItem todoItem3= TodoItem.create("내일은 드디어 불금이다!!");
+        TodoItem todoItem1 = TodoItem.create(1L, "아 인생 잣 같네", false);
+        TodoItem todoItem2= TodoItem.create(2L, "성공합시다!!!", false);
+        TodoItem todoItem3= TodoItem.create(3L, "내일은 드디어 불금이다!!", true);
 
         member1.saveItem(todoItem1);
         member2.saveItem(todoItem2);
@@ -77,7 +77,7 @@ public class TodoItemRepositoryTests {
         //then
         for (MemberReponseDto dto: collect) {
             System.out.println(dto.getEmail());
-            System.out.println(dto.getTodoItems().get(0).getContent());
+            System.out.println(dto.getTodoItems().get(0).getText());
         }
      }
 }
