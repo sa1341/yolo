@@ -1,5 +1,6 @@
 package com.junyoung.yolo.domain.member.entity;
 
+import com.junyoung.yolo.domain.BaseTimeEntity;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import lombok.*;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     private String id;
