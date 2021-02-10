@@ -2,6 +2,7 @@ package com.junyoung.yolo.repository;
 
 import com.junyoung.yolo.domain.member.dto.MemberReponseDto;
 import com.junyoung.yolo.domain.member.entity.Member;
+import com.junyoung.yolo.domain.todoItem.entity.QTodoItem;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Before;
@@ -13,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,23 +37,9 @@ public class TodoItemRepositoryTests {
 
     @Before
     public void before() {
-
         queryFactory = new JPAQueryFactory(em);
-
-        Member member1 = Member.create("junyoung", 30);
-        Member member2 = Member.create("minwan", 30);
-        Member member3 = Member.create("seungtop", 30);
-
-        TodoItem todoItem1 = TodoItem.create(1L, "아 인생 잣 같네", false);
-        TodoItem todoItem2= TodoItem.create(2L, "성공합시다!!!", false);
-        TodoItem todoItem3= TodoItem.create(3L, "내일은 드디어 불금이다!!", true);
-
-        member1.saveItem(todoItem1);
-        member2.saveItem(todoItem2);
-        member3.saveItem(todoItem3);
-        em.persist(member1);
-        em.persist(member2);
-        em.persist(member3);
+        TodoItem todoItem = TodoItem.create(1L, "helloWorld", false);
+        em.persist(todoItem);
     }
 
     /**
@@ -75,9 +64,31 @@ public class TodoItemRepositoryTests {
                 .collect(Collectors.toList());
 
         //then
-        for (MemberReponseDto dto: collect) {
+        for (MemberReponseDto dto : collect) {
             System.out.println(dto.getEmail());
             System.out.println(dto.getTodoItems().get(0).getText());
         }
-     }
+    }
+
+    @Test
+    public void lookUpTodoItemByDate() throws Exception {
+
+        TodoItem todoItem = queryFactory.selectFrom(QTodoItem.todoItem)
+                .where(QTodoItem.todoItem.text.eq("helloWorld"))
+                .fetchOne();
+
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+
+       /* List<TodoItem> todoItems = queryFactory
+                .selectFrom(todoItem)
+                .where(todoItem.createdAt.eq(formattedDate))
+                .fetch();
+
+        todoItems.forEach(todoItem -> {
+            System.out.println(todoItem.getCreatedDate());
+        });*/
+    }
 }

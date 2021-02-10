@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.junyoung.yolo.domain.todoItem.service.TodoServiceHelper.validateTodoItemRequest;
-
+ 
 @RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
 @RestController
