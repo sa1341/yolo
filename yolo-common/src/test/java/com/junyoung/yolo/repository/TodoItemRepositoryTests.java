@@ -14,7 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +41,9 @@ public class TodoItemRepositoryTests {
     public void before() {
         queryFactory = new JPAQueryFactory(em);
         TodoItem todoItem = TodoItem.create(1L, "helloWorld", false);
+        TodoItem todoItem2 = TodoItem.create(2L, "투두리스트 조회!!", false);
         em.persist(todoItem);
+        em.persist(todoItem2);
     }
 
     /**
@@ -72,23 +76,20 @@ public class TodoItemRepositoryTests {
 
     @Test
     public void lookUpTodoItemByDate() throws Exception {
+        LocalDate localDate = LocalDate.parse("2021-02-10", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDateTime startDate = localDate.atStartOfDay();
+        LocalDateTime endDate = LocalDateTime.of(localDate, LocalTime.of(23, 59, 59));
 
-        TodoItem todoItem = queryFactory.selectFrom(QTodoItem.todoItem)
-                .where(QTodoItem.todoItem.text.eq("helloWorld"))
-                .fetchOne();
+        System.out.println(startDate);
+        System.out.println(endDate);
 
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-
-       /* List<TodoItem> todoItems = queryFactory
-                .selectFrom(todoItem)
-                .where(todoItem.createdAt.eq(formattedDate))
+     List<TodoItem> todoItems = queryFactory
+                .selectFrom(QTodoItem.todoItem)
+                .where(QTodoItem.todoItem.startDate.between(startDate, endDate).and(todoItem.text.eq("helloWorld")))
                 .fetch();
 
-        todoItems.forEach(todoItem -> {
-            System.out.println(todoItem.getCreatedDate());
-        });*/
+      todoItems.forEach(todo -> {
+            System.out.println(todo.getText());
+        });
     }
 }

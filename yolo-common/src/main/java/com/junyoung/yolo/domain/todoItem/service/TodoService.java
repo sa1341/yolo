@@ -1,15 +1,18 @@
 package com.junyoung.yolo.domain.todoItem.service;
 
+import com.junyoung.yolo.domain.LocalDateParser;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemRequest;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import com.junyoung.yolo.domain.todoItem.repository.TodoItemRepository;
+import com.junyoung.yolo.domain.todoItem.repository.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ public class TodoService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TodoItemRepository todoItemRepository;
+    private final TodoJpaRepository todoJpaRepository;
 
     public void saveTodoItem(TodoItemRequest todoItemRequest) {
         TodoItem todoItem = todoItemRequest.toEntity();
@@ -34,6 +38,20 @@ public class TodoService {
         List<TodoItemResponse> todoResponse = todoItems.stream()
                 .map(TodoItem::changeTodoResponse)
                 .collect(Collectors.toList());
+        return todoResponse;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TodoItemResponse> fetchTodoItemsByDate(String date) {
+        LocalDateParser localDateParser = new LocalDateParser(date);
+        LocalDateTime startDate = localDateParser.startDate();
+        LocalDateTime endDate = localDateParser.endDate();
+
+        List<TodoItem> todoItems = todoJpaRepository.fetchTodoItemByDate(startDate, endDate);
+        List<TodoItemResponse> todoResponse = todoItems.stream()
+                .map(TodoItem::changeTodoResponse)
+                .collect(Collectors.toList());
+
         return todoResponse;
     }
 

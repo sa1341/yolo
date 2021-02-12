@@ -5,6 +5,8 @@ import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
 import com.junyoung.yolo.domain.todoItem.service.TodoService;
 import com.junyoung.yolo.util.GsonUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.junyoung.yolo.domain.todoItem.service.TodoServiceHelper.validateTodoItemRequest;
- 
+
 @RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
 @RestController
 public class TodoController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TodoService todoService;
 
     /**
@@ -27,6 +30,13 @@ public class TodoController {
     @GetMapping(value = "/todos", produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<TodoItemResponse>> fetchTodoItems() {
         List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItems();
+        return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/todos/{date}", produces = "application/json; charset=UTF-8")
+    public ResponseEntity<List<TodoItemResponse>> fetchTodoItemsByDate(@PathVariable final String date) {
+        logger.info("date: {}", date);
+        List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItemsByDate(date);
         return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
     }
 

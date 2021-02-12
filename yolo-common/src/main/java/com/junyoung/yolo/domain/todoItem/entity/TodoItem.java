@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -21,6 +22,8 @@ public class TodoItem extends BaseTimeEntity {
     private String text;
 
     private boolean isDone;
+
+    private LocalDateTime startDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
