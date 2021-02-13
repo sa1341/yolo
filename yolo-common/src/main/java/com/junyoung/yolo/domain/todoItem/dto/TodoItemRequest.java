@@ -8,11 +8,11 @@ import lombok.ToString;
 @Getter
 public class TodoItemRequest {
 
-    private Long id;
+    private String id;
     private String text;
     private boolean isDone;
 
     public TodoItem toEntity() {
-        return TodoItem.create(id, text, isDone);
+        return TodoItem.create(text, isDone);
     }
 }

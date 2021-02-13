@@ -6,6 +6,7 @@ import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import com.junyoung.yolo.domain.todoItem.repository.TodoItemRepository;
 import com.junyoung.yolo.domain.todoItem.repository.TodoJpaRepository;
+import com.junyoung.yolo.exception.TodoItemNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +27,18 @@ public class TodoService {
     private final TodoItemRepository todoItemRepository;
     private final TodoJpaRepository todoJpaRepository;
 
-    public void saveTodoItem(TodoItemRequest todoItemRequest) {
+    public String saveTodoItem(TodoItemRequest todoItemRequest) {
         TodoItem todoItem = todoItemRequest.toEntity();
         todoItemRepository.save(todoItem);
         logger.info("saving TodoItem is success");
+        return todoItem.getId();
+    }
+
+    public TodoItemResponse fetchTodoItemById(String id) {
+        Optional<TodoItem> opt = todoItemRepository.findById(id);
+        TodoItem todoItem = opt.orElseThrow(() -> new TodoItemNotFoundException());
+        TodoItemResponse todoItemResponse = todoItem.changeTodoResponse();
+        return todoItemResponse;
     }
 
     @Transactional(readOnly = true)
@@ -57,12 +66,12 @@ public class TodoService {
 
     public void deleteTodoItem(String id) {
         logger.warn("deleted TodoItemId: {}", id);
-        todoItemRepository.deleteById(Long.parseLong(id));
+        todoItemRepository.deleteById(id);
     }
 
     public String changeTodoItem(TodoItemRequest todoItemRequest) {
         TodoItem todoItem = todoItemRequest.toEntity();
-        Long id = todoItem.getId();
+        String id = todoItem.getId();
         Optional<TodoItem> optionalTodoItem = todoItemRepository.findById(id);
 
         if (optionalTodoItem.isPresent()) {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Getter
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class TodoItem extends BaseTimeEntity {
 
     @Id
-    private Long id;
+    private String id;
 
     private String text;
 
@@ -29,14 +30,14 @@ public class TodoItem extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    protected TodoItem(Long id, String text, boolean isDone) {
-        this.id = id;
+    protected TodoItem(String text, boolean isDone) {
+        this.id = UUID.randomUUID().toString();
         this.text = text;
         this.isDone = isDone;
     }
 
-    public static TodoItem create(Long id, String text, boolean isDone) {
-        return new TodoItem(id, text, isDone);
+    public static TodoItem create(String text, boolean isDone) {
+        return new TodoItem(text, isDone);
     }
 
     public void changeContent(String content) {
