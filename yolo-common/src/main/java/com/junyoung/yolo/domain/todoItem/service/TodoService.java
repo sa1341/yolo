@@ -27,11 +27,12 @@ public class TodoService {
     private final TodoItemRepository todoItemRepository;
     private final TodoJpaRepository todoJpaRepository;
 
-    public String saveTodoItem(TodoItemRequest todoItemRequest) {
+    public TodoItemResponse saveTodoItem(TodoItemRequest todoItemRequest) {
         TodoItem todoItem = todoItemRequest.toEntity();
         todoItemRepository.save(todoItem);
-        logger.info("saving TodoItem is success");
-        return todoItem.getId();
+        logger.info("saving TodoItem is success, id: [{}]", todoItem.getId());
+        TodoItemResponse todoItemResponse = todoItem.changeTodoResponse();
+        return todoItemResponse;
     }
 
     public TodoItemResponse fetchTodoItemById(String id) {

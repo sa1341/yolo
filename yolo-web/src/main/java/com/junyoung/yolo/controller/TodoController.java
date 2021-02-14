@@ -43,14 +43,13 @@ public class TodoController {
     @PostMapping(value = "/todos", produces = "application/json; charset=UTF-8")
     public ResponseEntity<TodoItemResponse> saveTodoItem(@RequestBody final TodoItemRequest todoItemRequest) {
         validateTodoItemRequest(todoItemRequest);
-        String id = todoService.saveTodoItem(todoItemRequest);
-        TodoItemResponse todoItemResponse = todoService.fetchTodoItemById(id);
+        TodoItemResponse todoItemResponse = todoService.saveTodoItem(todoItemRequest);
         return new ResponseEntity<>(todoItemResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/todos", produces = "application/json; charset=UTF-8")
     public ResponseEntity<String> updateTodoItem(@RequestBody final String todoItem) {
-        TodoItemRequest todoItemRequest  = GsonUtil.changeTodoItemRequest(todoItem);
+        TodoItemRequest todoItemRequest = GsonUtil.changeTodoItemRequest(todoItem);
         String updatedId = todoService.changeTodoItem(todoItemRequest);
         return new ResponseEntity<>(updatedId, HttpStatus.OK);
     }

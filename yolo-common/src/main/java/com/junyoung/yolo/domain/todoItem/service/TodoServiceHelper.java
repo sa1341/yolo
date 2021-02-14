@@ -11,7 +11,7 @@ public final class TodoServiceHelper {
 
     public static void validateTodoItemRequest(TodoItemRequest todoItemRequest) {
         if (todoItemRequest == null) {
-            throw new TodoItemNotFoundException("TodoItemRequest is necessary");
+            throw new TodoItemNotFoundException("TodoItem params is necessary");
         }
         logger.debug("TodoItemRequest: {}", todoItemRequest);
     }
