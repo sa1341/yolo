@@ -55,7 +55,7 @@ public class TodoController {
     }
 
     @DeleteMapping(value = "/todos/{id}", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> deleteTodoItem(@PathVariable final String id) {
+    public ResponseEntity<String> deleteTodoItemById(@PathVariable final String id) {
         todoService.deleteTodoItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
