@@ -40,8 +40,8 @@ public class TodoItemRepositoryTests {
     @Before
     public void before() {
         queryFactory = new JPAQueryFactory(em);
-        TodoItem todoItem = TodoItem.create(1L, "helloWorld", false);
-        TodoItem todoItem2 = TodoItem.create(2L, "투두리스트 조회!!", false);
+        TodoItem todoItem = TodoItem.create("helloWorld", false);
+        TodoItem todoItem2 = TodoItem.create("투두리스트 조회!!", false);
         em.persist(todoItem);
         em.persist(todoItem2);
     }

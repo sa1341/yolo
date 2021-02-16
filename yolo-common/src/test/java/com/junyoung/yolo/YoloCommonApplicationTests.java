@@ -1,8 +1,11 @@
 package com.junyoung.yolo;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.junit.Test;
 
-@SpringBootApplication
 public class YoloCommonApplicationTests {
-    public void contextLoads() {}
+
+    @Test
+    public void contextLoads() {
+        System.out.println("test Start!");
+    }
 }

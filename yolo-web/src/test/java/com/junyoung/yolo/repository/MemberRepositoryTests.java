@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 import static com.junyoung.yolo.domain.member.entity.QMember.member;
