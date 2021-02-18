@@ -1,19 +1,15 @@
 package com.junyoung.yolo.repository;
 
 import com.junyoung.yolo.domain.member.entity.Member;
-import com.junyoung.yolo.domain.member.entity.QMember;
-import com.junyoung.yolo.exception.MemberNotFoundException;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -23,7 +19,7 @@ import static com.junyoung.yolo.domain.member.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class MemberRepositoryTests {
 
@@ -32,7 +28,7 @@ public class MemberRepositoryTests {
 
     private JPAQueryFactory queryFactory;
 
-    @Before
+    @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
 
@@ -44,26 +40,6 @@ public class MemberRepositoryTests {
         em.persist(member2);
         em.persist(member3);
     }
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
-    @Test
-    public void saveMember() {
-        QMember member = QMember.member;
-        Member findMember = queryFactory
-                    .select(member)
-                    .from(member)
-                    .where(member.name.eq("11"))
-                    .fetchOne();
-
-        exceptionRule.expect(MemberNotFoundException.class);
-        exceptionRule.expectMessage("Member is not exist");
-        if (findMember == null) throw new MemberNotFoundException("Member is not exist");
-
-        //then
-        assertThat("junyoung").isEqualTo(findMember.getName());
-     }
 
 
      /**

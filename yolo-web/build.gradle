@@ -1,6 +1,54 @@
+def webappDir = "$projectDir/src/main/yolo-client"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
+        }
+    }
+}
+
+processResources {
+    dependsOn "buildReact"
+}
+
+task buildReact(type: Exec) {
+    dependsOn "installReact"
+    workingDir "$webappDir"
+    inputs.dir "$webappDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "yarn", "build"
+    }
+}
+
+task installReact(type: Exec) {
+    workingDir "$webappDir"
+    inputs.dir "$webappDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install'
+    } else {
+        commandLine "npm", "audit", "fix"
+        commandLine 'yarn', 'install'
+    }
+}
+
+task copyDistToStatic(type: Copy) {
+    // 빌드된 프론트엔드의 파일 위치
+    from("$projectDir/src/main/yolo-client/build/")
+    // 백엔드 API 서버의 static 리소스로 복사할 위치
+    into("$projectDir/src/main/resources/static/")
+    includeEmptyDirs = true
+}
+
 dependencies {
     compile project(':yolo-common')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }
+

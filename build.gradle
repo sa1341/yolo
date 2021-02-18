@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.1.9.RELEASE'
+        springBootVersion = '2.2.4.RELEASE'
         gradle_node_version='2.2.4'
         querydslPluginVersion = '1.0.10'
     }
@@ -26,7 +26,6 @@ allprojects {
 }
 
 subprojects {
-
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'org.springframework.boot'
@@ -65,7 +64,9 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'com.querydsl:querydsl-jpa'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
     }
 
     def querydslDir = "$buildDir/generated/querydsl"
@@ -87,7 +88,7 @@ subprojects {
         options.annotationProcessorPath = configurations.querydsl
     }
 
-    test {
+   test {
         useJUnitPlatform()
     }
 }

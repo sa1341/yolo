@@ -5,12 +5,12 @@ import com.junyoung.yolo.domain.member.entity.Member;
 import com.junyoung.yolo.domain.todoItem.entity.QTodoItem;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -28,7 +28,7 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
 @Transactional
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TodoItemRepositoryTests {
 
@@ -37,7 +37,7 @@ public class TodoItemRepositoryTests {
 
     private JPAQueryFactory queryFactory;
 
-    @Before
+    @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
         TodoItem todoItem = TodoItem.create("helloWorld", false);
