@@ -13,8 +13,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/v1/*", "/css/**", "/font/**", "/images/**", "/js/**", "/favicon.ico")
+                .antMatchers("/resources/**", "/api/v1/**", "login")
                 .permitAll();
+        http.csrf().disable();
     }
 
     @Bean

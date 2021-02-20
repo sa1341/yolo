@@ -4,6 +4,7 @@ import com.junyoung.yolo.domain.member.dto.MemberReponseDto;
 import com.junyoung.yolo.domain.member.entity.Member;
 import com.junyoung.yolo.domain.todoItem.entity.QTodoItem;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
+import com.junyoung.yolo.domain.todoItem.repository.TodoItemRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,15 +38,39 @@ public class TodoItemRepositoryTests {
 
     private JPAQueryFactory queryFactory;
 
+    @Autowired
+    private TodoItemRepository todoItemRepository;
+
     @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
+        Member member = Member.create("a7713", "jun", 25);
         TodoItem todoItem = TodoItem.create("helloWorld", false);
         TodoItem todoItem2 = TodoItem.create("투두리스트 조회!!", false);
-        em.persist(todoItem);
-        em.persist(todoItem2);
+        member.saveItem(todoItem);
+        member.saveItem(todoItem2);
+        em.persist(member);
     }
 
+    @Test
+    public void deleteTodoItem() throws Exception {
+
+        //given
+        Member newbee = queryFactory.selectFrom(member)
+                .where(member.name.eq("newbee"))
+                .fetchOne();
+        //when
+        List<TodoItem> todoItemList = newbee.getTodoItemList();
+
+
+        TodoItem findTodoItem = todoItemList.stream()
+                .filter(todos -> todos.getText().equals("helloWorld")).findFirst().get();
+
+        System.out.println("result:" + findTodoItem.getText());
+        //then
+
+     }
+    
     /**
      * Querydsl에서 제공하는 Result Aggregation (결과 집합)을 사용하는 예제 코드입니다.
      * 결과집합은 Querydsl의 결과를 특정 키를 기준 삼아 그룹화 하는 것을 의미함.00

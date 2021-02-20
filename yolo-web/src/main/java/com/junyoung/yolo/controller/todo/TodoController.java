@@ -1,4 +1,4 @@
-package com.junyoung.yolo.controller;
+package com.junyoung.yolo.controller.todo;
 
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemRequest;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;

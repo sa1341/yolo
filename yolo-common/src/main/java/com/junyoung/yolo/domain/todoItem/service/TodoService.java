@@ -1,6 +1,8 @@
 package com.junyoung.yolo.domain.todoItem.service;
 
 import com.junyoung.yolo.domain.LocalDateParser;
+import com.junyoung.yolo.domain.member.entity.Member;
+import com.junyoung.yolo.domain.member.repository.MemberRepository;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemRequest;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.junyoung.yolo.domain.member.service.MemberServiceHelper.findExistingMember;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -26,10 +30,14 @@ public class TodoService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TodoItemRepository todoItemRepository;
     private final TodoJpaRepository todoJpaRepository;
+    private final MemberRepository memberRepository;
 
     public TodoItemResponse saveTodoItem(TodoItemRequest todoItemRequest) {
+        String memberId = todoItemRequest.getMemberId();
+        Member findMember = findExistingMember(memberRepository, memberId);
+        logger.info("memberId: {}", findMember.getId());
         TodoItem todoItem = todoItemRequest.toEntity();
-        todoItemRepository.save(todoItem);
+        findMember.saveItem(todoItem);
         logger.info("saving TodoItem is success, id: [{}]", todoItem.getId());
         TodoItemResponse todoItemResponse = todoItem.changeTodoResponse();
         return todoItemResponse;
@@ -66,8 +74,11 @@ public class TodoService {
     }
 
     public void deleteTodoItem(String id) {
+        Optional<TodoItem> todoItem = todoItemRepository.findById(id);
+        TodoItem findTodoItem = todoItem.orElseThrow(() -> new TodoItemNotFoundException("TodoItem is not exist: " + id));
+        Member member = findTodoItem.getMember();
         logger.warn("deleted TodoItemId: {}", id);
-        todoItemRepository.deleteById(id);
+        member.deleteTodoItem(findTodoItem);
     }
 
     public String changeTodoItem(TodoItemRequest todoItemRequest) {

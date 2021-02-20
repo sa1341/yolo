@@ -24,11 +24,11 @@ public class TodoItem extends BaseTimeEntity {
 
     private boolean isDone;
 
-    private LocalDateTime startDate;
-
+    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
     private Member member;
+
+    private LocalDateTime startDate;
 
     protected TodoItem(String text, boolean isDone) {
         this.id = UUID.randomUUID().toString();
@@ -40,14 +40,15 @@ public class TodoItem extends BaseTimeEntity {
         return new TodoItem(text, isDone);
     }
 
-    public void changeContent(String content) {
-        this.text = content;
-    }
     public void setMember(Member member) {
         this.member = member;
     }
 
+    public void changeContent(String content) {
+        this.text = content;
+    }
+
     public TodoItemResponse changeTodoResponse() {
-        return new TodoItemResponse(this.id, this.text, this.isDone);
+        return new TodoItemResponse(this.id, this.text, this.isDone, this.member.getId());
     }
 }

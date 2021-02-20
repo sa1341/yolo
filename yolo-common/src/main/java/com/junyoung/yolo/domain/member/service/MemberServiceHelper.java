@@ -9,11 +9,9 @@ import java.util.Optional;
 public final class MemberServiceHelper {
     public static Member findExistingMember(MemberRepository repo, String memberId) {
         Optional<Member> findMember = repo.findById(memberId);
-
         if (!findMember.isPresent()) {
             throw new MemberNotFoundException(memberId);
         }
-
         return findMember.get();
     }
 }

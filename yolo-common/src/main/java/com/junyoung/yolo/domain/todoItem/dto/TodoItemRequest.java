@@ -11,6 +11,7 @@ public class TodoItemRequest {
     private String id;
     private String text;
     private boolean isDone;
+    private String memberId;
 
     public TodoItem toEntity() {
         return TodoItem.create(text, isDone);

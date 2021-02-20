@@ -32,15 +32,14 @@ public class MemberRepositoryTests {
     public void before() {
         queryFactory = new JPAQueryFactory(em);
 
-        Member member1 = Member.create("junyoung", 30);
-        Member member2 = Member.create("minwan", 30);
-        Member member3 = Member.create("seungtop", 30);
+        Member member1 = Member.create("sa1341","junyoung", 30);
+        Member member2 = Member.create("syn7714","minwan", 30);
+        Member member3 = Member.create("syn1341","seungtop", 30);
 
         em.persist(member1);
         em.persist(member2);
         em.persist(member3);
     }
-
 
      /**
         페이징 처리를 위한 테스트 코드 작
