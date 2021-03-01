@@ -12,11 +12,14 @@ import com.junyoung.yolo.exception.TodoItemNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.BasicJsonParser;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -60,12 +63,13 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public List<TodoItemResponse> fetchTodoItemsByDate(String date) {
-        LocalDateParser localDateParser = new LocalDateParser(date);
+    public List<TodoItemResponse> fetchTodoItemsByDate(String memberId, String date) {
+        String parsedDate = convertJsonToString(date);
+        LocalDateParser localDateParser = new LocalDateParser(parsedDate);
         LocalDateTime startDate = localDateParser.startDate();
         LocalDateTime endDate = localDateParser.endDate();
 
-        List<TodoItem> todoItems = todoJpaRepository.fetchTodoItemByDate(startDate, endDate);
+        List<TodoItem> todoItems = todoJpaRepository.fetchTodoItemByDate(memberId, startDate, endDate);
         List<TodoItemResponse> todoResponse = todoItems.stream()
                 .map(TodoItem::changeTodoResponse)
                 .collect(Collectors.toList());
@@ -73,12 +77,27 @@ public class TodoService {
         return todoResponse;
     }
 
+    private String convertJsonToString(String date) {
+        JsonParser jsonParser = new BasicJsonParser();
+        Map<String, Object> parseMap = jsonParser.parseMap(date);
+        String parsedDate = (String) parseMap.get("date");
+        return parsedDate;
+    }
+
     public void deleteTodoItem(String id) {
-        Optional<TodoItem> todoItem = todoItemRepository.findById(id);
-        TodoItem findTodoItem = todoItem.orElseThrow(() -> new TodoItemNotFoundException("TodoItem is not exist: " + id));
-        Member member = findTodoItem.getMember();
-        logger.warn("deleted TodoItemId: {}", id);
-        member.deleteTodoItem(findTodoItem);
+       /* Optional<TodoItem> todoItem = todoItemRepository.findById(id);
+        TodoItem findTodoItem = todoItem.orElseThrow(() -> new TodoItemNotFoundException("TodoItem is not exist: " + id));*/
+        TodoItem todoItem = todoJpaRepository.fetchTodoItemWithMember(id);
+
+        if (todoItem != null) {
+            logger.info("TodoItem text: {}", todoItem.getText());
+
+            Member member = todoItem.getMember();
+            logger.info("memberId: {}", member.getId());
+
+            logger.warn("deleted TodoItemId: {}", id);
+            member.deleteTodoItem(todoItem);
+        }
     }
 
     public String changeTodoItem(TodoItemRequest todoItemRequest) {

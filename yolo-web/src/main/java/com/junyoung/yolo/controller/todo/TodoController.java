@@ -33,10 +33,12 @@ public class TodoController {
         return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/todos/{date}", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<List<TodoItemResponse>> fetchTodoItemsByDate(@PathVariable final String date) {
+    @PostMapping(value = "/todos/{id}", produces = "application/json; charset=UTF-8")
+    public ResponseEntity<List<TodoItemResponse>> fetchTodoItemsByDate(
+            @PathVariable final String id, @RequestBody final String date) {
+        logger.info("memberId: {}", id);
         logger.info("date: {}", date);
-        List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItemsByDate(date);
+        List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItemsByDate(id, date);
         return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
     }
 
@@ -56,6 +58,7 @@ public class TodoController {
 
     @DeleteMapping(value = "/todos/{id}", produces = "application/json; charset=UTF-8")
     public ResponseEntity<String> deleteTodoItemById(@PathVariable final String id) {
+        logger.info("TodoItem Id: {}", id);
         todoService.deleteTodoItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

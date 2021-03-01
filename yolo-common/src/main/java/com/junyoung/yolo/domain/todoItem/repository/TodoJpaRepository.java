@@ -2,28 +2,31 @@ package com.junyoung.yolo.domain.todoItem.repository;
 
 import com.junyoung.yolo.domain.todoItem.entity.TodoItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.junyoung.yolo.domain.member.entity.QMember.member;
 import static com.junyoung.yolo.domain.todoItem.entity.QTodoItem.todoItem;
 
+@RequiredArgsConstructor
 @Repository
 public class TodoJpaRepository {
 
-    private EntityManager em;
-    private JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-    public TodoJpaRepository(EntityManager em) {
-        this.em = em;
-        queryFactory = new JPAQueryFactory(em);
+    public List<TodoItem> fetchTodoItemByDate(String memberId, LocalDateTime startDate, LocalDateTime endDate) {
+        return queryFactory.selectFrom(todoItem)
+                .where(todoItem.createdDate.between(startDate, endDate).and(todoItem.member.id.eq(memberId)))
+                .fetch();
     }
 
-    public List<TodoItem> fetchTodoItemByDate(LocalDateTime startDate, LocalDateTime endDate) {
+    public TodoItem fetchTodoItemWithMember(String id) {
         return queryFactory.selectFrom(todoItem)
-                .where(todoItem.createdDate.between(startDate, endDate))
-                .fetch();
+                .join(todoItem.member, member).fetchJoin()
+                .where(todoItem.id.eq(id))
+                .fetchOne();
     }
 }
