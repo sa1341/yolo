@@ -14,6 +14,10 @@ public class NewMemberReq {
     private int age;
 
     public Member toEntity() {
-        return Member.create(id, name, age);
+        return Member.builder()
+                .id(id)
+                .name(name)
+                .age(age)
+                .build();
     }
 }

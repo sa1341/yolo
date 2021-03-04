@@ -7,10 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,25 +18,24 @@ public class Member extends BaseTimeEntity {
 
     @Id
     private String id;
+
     private String name;
+
     private int age;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MemberRole role;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<TodoItem> todoItemList = new ArrayList<>();
 
     @Builder
-    public Member(String id ,String name, int age) {
+    public Member(String id ,String name, int age, MemberRole role) {
         this.id = id;
         this.name = name;
         this.age = age;
-    }
-
-    public static Member create(String id, String name, int age) {
-        return Member.builder()
-                     .id(id)
-                     .name(name)
-                     .age(age)
-                     .build();
+        this.role = role;
     }
 
     public void saveItem(TodoItem todoItem) {
@@ -50,5 +46,9 @@ public class Member extends BaseTimeEntity {
     public void deleteTodoItem(TodoItem todoItem) {
         this.getTodoItemList().remove(todoItem);
         todoItem.setMember(null);
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 }

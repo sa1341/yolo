@@ -1,4 +1,4 @@
 spring:
   profiles:
-    include: common
+    include: common,oauth
     active: local

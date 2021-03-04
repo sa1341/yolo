@@ -13,9 +13,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/resources/**", "/api/v1/**", "login")
-                .permitAll();
+                .antMatchers("/resources/**", "login").permitAll()
+                .antMatchers("/api/v1/**").hasRole("USER");
+        http.formLogin();
         http.csrf().disable();
+        http.oauth2Login();
     }
 
     @Bean
