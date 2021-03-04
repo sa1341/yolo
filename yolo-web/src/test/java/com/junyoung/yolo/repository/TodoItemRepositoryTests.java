@@ -44,9 +44,9 @@ public class TodoItemRepositoryTests {
     @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
-        Member member = Member.create("a7713", "jun", 25);
+        Member member = Member.create("ahffkdbfkrql@naver.com", "jun", 25);
         TodoItem todoItem = TodoItem.create("helloWorld", false);
-        TodoItem todoItem2 = TodoItem.create("투두리스트 조회!!", false);
+        TodoItem todoItem2 = TodoItem.create("springBoot", false);
         member.saveItem(todoItem);
         member.saveItem(todoItem2);
         em.persist(member);
@@ -117,4 +117,20 @@ public class TodoItemRepositoryTests {
             System.out.println(todo.getText());
         });
     }
+
+    @Test
+    public void fetchTodoItemsByDate() throws Exception {
+
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now();
+
+        //given
+        TodoItem todoItem = queryFactory.selectFrom(QTodoItem.todoItem)
+                .where(QTodoItem.todoItem.createdDate.between(startDate, endDate).and(QTodoItem.todoItem.member.id.eq("ahffkdbfkrql@naver.com")))
+                .fetchOne();
+
+        //when
+        //then
+        //Assertions.assertThat(todoItem.getText()).isEqualTo("helloWorld");
+     }
 }
