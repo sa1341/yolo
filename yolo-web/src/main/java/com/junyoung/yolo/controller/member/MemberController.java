@@ -25,7 +25,13 @@ public class MemberController {
 
     @GetMapping("/fetch")
     public ResponseEntity<String> fetchMemberWithTodoItems() {
-        Member member = memberService.findById("a9a887d2-8f94-40d9-812e-c52594520f79");
+        Member member = memberService.findById("a79007714@gmail.com");
         return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testOauth2() {
+        String result = "sibal oauth2";
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

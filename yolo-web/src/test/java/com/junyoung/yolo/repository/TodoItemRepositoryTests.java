@@ -44,7 +44,11 @@ public class TodoItemRepositoryTests {
     @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
-        Member member = Member.create("ahffkdbfkrql@naver.com", "jun", 25);
+        Member member = Member.builder()
+                        .id("ahffkdbfkrql@naver.com")
+                        .age(25)
+                        .name("jun")
+                        .build();
         TodoItem todoItem = TodoItem.create("helloWorld", false);
         TodoItem todoItem2 = TodoItem.create("springBoot", false);
         member.saveItem(todoItem);

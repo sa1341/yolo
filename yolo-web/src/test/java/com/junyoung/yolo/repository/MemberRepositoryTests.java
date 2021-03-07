@@ -1,9 +1,12 @@
 package com.junyoung.yolo.repository;
 
 import com.junyoung.yolo.domain.member.entity.Member;
+import com.junyoung.yolo.domain.member.entity.MemberRole;
+import com.junyoung.yolo.domain.member.entity.QMember;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import static com.junyoung.yolo.domain.member.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,14 +36,27 @@ public class MemberRepositoryTests {
     public void before() {
         queryFactory = new JPAQueryFactory(em);
 
-        Member member1 = Member.create("sa1341","junyoung", 30);
-        Member member2 = Member.create("syn7714","minwan", 30);
-        Member member3 = Member.create("syn1341","seungtop", 30);
-
+        Member member1 = Member.builder()
+                .id("a790077714@gmail.com")
+                .name("junyoung")
+                .age(30)
+                .build();
+        member1.addMemberRole(MemberRole.USER);
         em.persist(member1);
-        em.persist(member2);
-        em.persist(member3);
     }
+
+    @Test
+    public void findMemberById() throws Exception {
+
+        //given
+        Member member = Optional.ofNullable(queryFactory.selectFrom(QMember.member)
+                .where(QMember.member.id.eq("a79007714@gmail.com1"))
+                .fetchOne()).orElseThrow(() ->  new Exception());
+
+        //when
+        //then
+        Assertions.assertThat(member.getId()).isEqualTo("a79007714@gmail.com");
+     }
 
      /**
         페이징 처리를 위한 테스트 코드 작
