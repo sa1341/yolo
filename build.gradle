@@ -63,32 +63,12 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'com.querydsl:querydsl-jpa'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
     }
 
-    def querydslDir = "$buildDir/generated/querydsl"
-
-    querydsl {
-        jpa = true
-        querydslSourcesDir = querydslDir
-    }
-
-    sourceSets {
-        main.java.srcDir querydslDir
-    }
-
-    configurations {
-        querydsl.extendsFrom compileClasspath
-    }
-
-    compileQuerydsl {
-        options.annotationProcessorPath = configurations.querydsl
-    }
-
-   test {
+    test {
         useJUnitPlatform()
     }
 }

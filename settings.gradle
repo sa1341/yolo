@@ -1,3 +1,3 @@
 rootProject.name = 'yolo'
-include 'yolo-common'
-include 'yolo-web'
+include 'yolo-core'
+include 'yolo-api'

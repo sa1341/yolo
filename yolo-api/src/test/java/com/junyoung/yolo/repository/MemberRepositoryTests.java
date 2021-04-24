@@ -8,6 +8,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,13 @@ public class MemberRepositoryTests {
         em.persist(member1);
     }
 
+    @DisplayName(value = "회원 아이디 조회 테스트")
     @Test
     public void findMemberById() throws Exception {
 
         //given
         Member member = Optional.ofNullable(queryFactory.selectFrom(QMember.member)
-                .where(QMember.member.id.eq("a79007714@gmail.com1"))
+                .where(QMember.member.id.eq("a79007714@gmail.com"))
                 .fetchOne()).orElseThrow(() ->  new Exception());
 
         //when
