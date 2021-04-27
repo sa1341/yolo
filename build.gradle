@@ -3,6 +3,7 @@ buildscript {
         springBootVersion = '2.2.4.RELEASE'
         gradle_node_version='2.2.4'
         querydslPluginVersion = '1.0.10'
+        asciidoctorVersion = '1.5.9.2'
     }
 
     repositories {
@@ -63,9 +64,7 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        testImplementation('org.springframework.boot:spring-boot-starter-test') {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        }
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
     test {

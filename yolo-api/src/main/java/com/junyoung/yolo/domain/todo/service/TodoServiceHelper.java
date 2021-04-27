@@ -1,4 +1,4 @@
-package com.junyoung.yolo.domain.todoItem.service;
+package com.junyoung.yolo.domain.todo.service;
 
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemRequest;
 import com.junyoung.yolo.exception.TodoItemNotFoundException;
@@ -11,9 +11,11 @@ public final class TodoServiceHelper {
     private static final Logger logger = LoggerFactory.getLogger(TodoServiceHelper.class);
 
     public static void validateTodoItemRequest(TodoItemRequest todoItemRequest) {
+
         if (todoItemRequest == null || StringUtils.isEmpty(todoItemRequest.getMemberId())) {
             throw new TodoItemNotFoundException("TodoItem params is necessary");
         }
+
         logger.debug("TodoItemRequest: {}", todoItemRequest);
     }
 }

@@ -1,8 +1,8 @@
-package com.junyoung.yolo.controller.todo;
+package com.junyoung.yolo.domain.todo.controller;
 
+import com.junyoung.yolo.domain.todo.service.TodoService;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemRequest;
 import com.junyoung.yolo.domain.todoItem.dto.TodoItemResponse;
-import com.junyoung.yolo.domain.todoItem.service.TodoService;
 import com.junyoung.yolo.util.GsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.junyoung.yolo.domain.todoItem.service.TodoServiceHelper.validateTodoItemRequest;
+import static com.junyoung.yolo.domain.todo.service.TodoServiceHelper.validateTodoItemRequest;
+
 
 @RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
@@ -26,7 +27,6 @@ public class TodoController {
     /**
      * TodoItem 엔티티의 LifeCycle을 관장하는 Restful API 입니다.
      */
-
     @GetMapping(value = "/todos", produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<TodoItemResponse>> fetchTodoItems() {
         List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItems();

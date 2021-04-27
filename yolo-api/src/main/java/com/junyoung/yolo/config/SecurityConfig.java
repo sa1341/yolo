@@ -20,8 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/v1/**").permitAll()
-                .antMatchers("/api/v1/**").hasRole("USER");
+                .antMatchers("/api/v1/**").permitAll();
+                //.antMatchers("/api/v1/**").hasRole("USER");
         http.formLogin();
         http.csrf().disable().headers().frameOptions().disable();
         http.oauth2Login().userInfoEndpoint().userService(customOauth2UserDetailService);

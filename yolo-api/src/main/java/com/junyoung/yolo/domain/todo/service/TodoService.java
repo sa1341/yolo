@@ -1,4 +1,4 @@
-package com.junyoung.yolo.domain.todoItem.service;
+package com.junyoung.yolo.domain.todo.service;
 
 import com.junyoung.yolo.domain.LocalDateParser;
 import com.junyoung.yolo.domain.member.entity.Member;
@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.junyoung.yolo.domain.member.service.MemberServiceHelper.findExistingMember;
+
 
 @Transactional
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.junyoung.yolo.controller.member;
+package com.junyoung.yolo.domain.member.controller;
 
 import com.junyoung.yolo.domain.member.dto.NewMemberReq;
 import com.junyoung.yolo.domain.member.entity.Member;
