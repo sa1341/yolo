@@ -2,6 +2,7 @@ package com.junyoung.yolo.domain.member.controller;
 
 import com.junyoung.yolo.domain.member.dto.NewMemberReq;
 import com.junyoung.yolo.domain.member.entity.Member;
+import com.junyoung.yolo.domain.member.repository.MemberRepository;
 import com.junyoung.yolo.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
 
     @PostMapping("/join")

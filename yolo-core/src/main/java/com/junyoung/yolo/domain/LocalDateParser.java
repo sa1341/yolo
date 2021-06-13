@@ -9,17 +9,17 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 public class LocalDateParser {
-    private LocalDate searchDate;
 
-    public LocalDateParser(String currentDate) {
-        this.searchDate = LocalDate.parse(currentDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    public LocalDateParser() {
     }
 
-    public LocalDateTime startDate() {
-        return this.searchDate.atStartOfDay();
+    public static LocalDateTime parseStartDate(String startDate) {
+        LocalDate localStartDate = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return localStartDate.atStartOfDay();
     }
 
-    public LocalDateTime endDate() {
-        return LocalDateTime.of(searchDate, LocalTime.of(23, 59, 59));
+    public static LocalDateTime parseEndDate(String endDate) {
+        LocalDate localEndDate = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return LocalDateTime.of(localEndDate, LocalTime.of(23, 59, 59));
     }
 }

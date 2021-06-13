@@ -1,0 +1,24 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: todoItem-save
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+[[resources]]
+= TodoItem
+
+[[resources-todoItem]]
+== TodoItem
+
+[[resources-todoItem]]
+=== TodoItem 저장 API
+include::{snippets}/saveTodoItem/http-request.adoc[]
+include::{snippets}/saveTodoItem/http-response.adoc[]
+include::{snippets}/saveTodoItem/response-fields.adoc[]
+include::{snippets}/saveTodoItem/request-fields.adoc[]

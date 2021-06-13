@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.junyoung.yolo.domain.todo.service.TodoServiceHelper.checkStartAndEndDate;
 import static com.junyoung.yolo.domain.todo.service.TodoServiceHelper.validateTodoItemRequest;
 
 
@@ -33,12 +34,16 @@ public class TodoController {
         return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/todos/{id}", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<List<TodoItemResponse>> fetchTodoItemsByDate(
-            @PathVariable final String id, @RequestBody final String date) {
+    @GetMapping(value = "/todos/{id}", produces = "application/json; charset=UTF-8")
+    public ResponseEntity<List<TodoItemResponse>> findTodoItemsByDate(
+            @PathVariable final String id,
+            @RequestParam(name = "selectedStartDate") final String selectedStartDate,
+            @RequestParam(name = "selectedEndDate") final String selectedEndDate) {
         logger.info("memberId: {}", id);
-        logger.info("date: {}", date);
-        List<TodoItemResponse> todoItemResponses = todoService.fetchTodoItemsByDate(id, date);
+        logger.info("selectedStartDate: {}", selectedStartDate);
+        logger.info("selectedEndDate: {}", selectedEndDate);
+        checkStartAndEndDate(selectedStartDate, selectedEndDate);
+        List<TodoItemResponse> todoItemResponses = todoService.findTodoItemsByDate(id, selectedStartDate, selectedEndDate);
         return new ResponseEntity<>(todoItemResponses, HttpStatus.OK);
     }
 
@@ -46,7 +51,7 @@ public class TodoController {
     public ResponseEntity<TodoItemResponse> saveTodoItem(@RequestBody final TodoItemRequest todoItemRequest) {
         validateTodoItemRequest(todoItemRequest);
         TodoItemResponse todoItemResponse = todoService.saveTodoItem(todoItemRequest);
-        return new ResponseEntity<>(todoItemResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(todoItemResponse, HttpStatus.OK);
     }
 
     @PutMapping(value = "/todos", produces = "application/json; charset=UTF-8")

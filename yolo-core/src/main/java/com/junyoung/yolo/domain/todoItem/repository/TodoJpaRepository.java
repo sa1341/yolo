@@ -18,7 +18,9 @@ public class TodoJpaRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<TodoItem> fetchTodoItemByDate(String memberId, LocalDateTime startDate, LocalDateTime endDate) {
-        return queryFactory.selectFrom(todoItem)
+        return queryFactory.select(todoItem)
+                .from(todoItem)
+                .join(todoItem.member, member)
                 .where(todoItem.createdDate.between(startDate, endDate).and(todoItem.member.id.eq(memberId)))
                 .fetch();
     }

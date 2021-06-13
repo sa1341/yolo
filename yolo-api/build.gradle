@@ -1,14 +1,5 @@
 plugins {
-    id "org.asciidoctor.convert" version "1.5.9.2"
-}
-
-dependencies {
-    compile project(':yolo-core')
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    id "org.asciidoctor.convert" version "1.5.3"
 }
 
 asciidoctor {
@@ -32,3 +23,27 @@ task copyDocument(type: Copy) {
 build {
     dependsOn copyDocument
 }
+
+ext {
+    set('springCloudVersion', "Hoxton.SR9")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    compile project(':yolo-core')
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+
+

@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -27,8 +26,6 @@ public class TodoItem extends BaseTimeEntity {
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
-    private LocalDateTime startDate;
 
     protected TodoItem(String text, boolean isDone) {
         this.id = UUID.randomUUID().toString();

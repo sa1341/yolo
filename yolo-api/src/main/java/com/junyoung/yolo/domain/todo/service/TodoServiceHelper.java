@@ -18,4 +18,10 @@ public final class TodoServiceHelper {
 
         logger.debug("TodoItemRequest: {}", todoItemRequest);
     }
+
+    public static void checkStartAndEndDate(final String startDate, String endDate) {
+        if (StringUtils.isEmpty(startDate) || StringUtils.isEmpty(endDate)) {
+            throw new IllegalArgumentException("startDate And EndDate is necessary");
+        }
+    }
 }

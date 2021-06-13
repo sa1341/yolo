@@ -1,0 +1,30 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: findTodoItemByDate-API
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+[[resources]]
+= TodoItem
+
+[[resources-todoItem]]
+== TodoItem
+
+[[resources-todoItem]]
+=== TodoItem 날짜로 조회하는 API
+
+==== Request Parameter 명세서
+include::{snippets}/findTodoItemByDate/request-parameters.adoc[]
+
+==== Path 변수 명세서
+include::{snippets}/findTodoItemByDate/path-parameters.adoc[]
+
+==== Response Body 명세서
+include::{snippets}/findTodoItemByDate/http-response.adoc[]
+
