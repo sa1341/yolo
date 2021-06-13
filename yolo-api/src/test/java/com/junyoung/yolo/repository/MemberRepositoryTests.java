@@ -5,7 +5,6 @@ import com.junyoung.yolo.domain.member.entity.MemberRole;
 import com.junyoung.yolo.domain.member.entity.QMember;
 import com.junyoung.yolo.domain.member.repository.MemberRepository;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -76,7 +75,6 @@ public class MemberRepositoryTests {
       @Test
       public void paging1() throws Exception {
           //given
-          //when
           List<Member> result = queryFactory
                   .selectFrom(member)
                   .orderBy(member.name.desc())
@@ -84,29 +82,10 @@ public class MemberRepositoryTests {
                   .limit(2)
                   .fetch();
 
+          //when
           result.forEach(m -> System.out.println(m.getName()));
 
           //then
           assertThat(result.size()).isEqualTo(1);
-       }
-
-       @Test
-       public void aggregation() throws Exception {
-
-           //given
-           List<Tuple> result = queryFactory.select(member.count(),
-                   member.age.sum(),
-                   member.age.avg(),
-                   member.age.max(),
-                   member.age.min())
-                   .from(member)
-                   .fetch();
-
-           //when
-            Tuple tuple = result.get(0);
-           //then
-           assertThat(tuple.get(member.count())).isEqualTo(2);
-           assertThat(tuple.get(member.age.sum())).isEqualTo(60);
-           assertThat(tuple.get(member.age.avg())).isEqualTo(30);
-        }
+      }
 }

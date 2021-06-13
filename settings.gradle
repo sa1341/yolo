@@ -1,3 +1,4 @@
 rootProject.name = 'yolo'
 include 'yolo-core'
 include 'yolo-api'
+include 'yolo-batch'

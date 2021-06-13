@@ -31,10 +31,11 @@ public class Member extends BaseTimeEntity {
     private List<TodoItem> todoItemList = new ArrayList<>();
 
     @Builder
-    public Member(String id ,String name, int age) {
+    public Member(String id ,String name, int age, MemberRole role) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.role = role;
     }
 
     public void saveItem(TodoItem todoItem) {

@@ -21,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.junyoung.yolo.doc.ApiDocumentUtils.getDocumentRequest;
 import static com.junyoung.yolo.doc.ApiDocumentUtils.getDocumentResponse;
@@ -49,6 +50,7 @@ public class TodoItemControllerTests extends RestDocumentTests {
     public void todoItem_저장을_한다() throws Exception {
         //given
         TodoItemRequest todoItemRequest = new TodoItemRequest();
+        todoItemRequest.setId(UUID.randomUUID().toString());
         todoItemRequest.setText("어디로 가야하오?");
         todoItemRequest.setDone(true);
         todoItemRequest.setMemberId("a79007714@gmail.com");
@@ -70,12 +72,13 @@ public class TodoItemControllerTests extends RestDocumentTests {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
+                                fieldWithPath("id").type(JsonFieldType.STRING).description("TodoItem 식별 값"),
                                 fieldWithPath("text").type(JsonFieldType.STRING).description("오늘의 할 일"),
-                                fieldWithPath("done").type(JsonFieldType.BOOLEAN).description("업무 완료 여"),
+                                fieldWithPath("done").type(JsonFieldType.BOOLEAN).description("업무 완료 여부"),
                                 fieldWithPath("memberId").type(JsonFieldType.STRING).description("회원 ID")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.STRING).description("TodoItem 식별 "),
+                                fieldWithPath("id").type(JsonFieldType.STRING).description("TodoItem 식별 값"),
                                 fieldWithPath("text").type(JsonFieldType.STRING).description("오늘의 할 일"),
                                 fieldWithPath("done").type(JsonFieldType.BOOLEAN).description("업무 완료 여부"),
                                 fieldWithPath("memberId").type(JsonFieldType.STRING).description("회원 ID"))
